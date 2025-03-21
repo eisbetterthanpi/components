@@ -1,4 +1,5 @@
 # @title UniversalInvertedBottleneckBlock
+# MobileNetV4: Universal Models for the Mobile Ecosystem https://arxiv.org/pdf/2404.10518
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -20,8 +21,8 @@ class UIB(nn.Module):
         x = self.conv(x) * self.gamma
         return x
 
-in_ch, out_ch = 3, 3
-model = UIB(in_ch, out_ch)
-x = torch.randn(2, in_ch, 7,9)
-out = model(x)
-print(out.shape)
+# in_ch, out_ch = 3, 3
+# model = UIB(in_ch, out_ch)
+# x = torch.randn(2, in_ch, 7,9)
+# out = model(x)
+# print(out.shape)
