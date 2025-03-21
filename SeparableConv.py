@@ -4,7 +4,7 @@ class SeparableConv2d(nn.Module):
     def __init__(self, in_ch, out_ch=None):
         super().__init__()
         out_ch = out_ch or in_ch
-        self.conv = nn.Conv2d(in_ch, out_ch, 3, 1, 3//2, groups=in_ch, bias=False)
+        self.conv = nn.Conv2d(in_ch, in_ch, 3, 1, 3//2, groups=in_ch, bias=False)
         self.pointwise = nn.Conv2d(in_ch, out_ch, 1, bias=False)
 
     def forward(self,x):
@@ -16,7 +16,7 @@ class SeparableConv1d(nn.Module):
     def __init__(self, in_ch, out_ch=None):
         super().__init__()
         out_ch = out_ch or in_ch
-        self.conv = nn.Convd(in_ch, out_ch, 3, 1, 3//2, groups=in_ch, bias=False)
+        self.conv = nn.Convd(in_ch, in_ch, 3, 1, 3//2, groups=in_ch, bias=False)
         self.pointwise = nn.Convd(in_ch, out_ch, 1, bias=False)
 
     def forward(self,x):
