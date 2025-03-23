@@ -26,3 +26,17 @@ class UIB(nn.Module):
 # x = torch.randn(2, in_ch, 7,9)
 # out = model(x)
 # print(out.shape)
+
+        # self.conv = nn.Sequential( # me
+        #     nn.Conv2d(in_ch, in_ch, 3, 1, 3//2, groups=in_ch, bias=False), nn.BatchNorm2d(in_ch),
+        #     GatedAdaLN(in_ch), nn.BatchNorm2d(in_ch), act,
+        #     nn.Conv2d(in_ch, in_ch, 3, 1, 3//2, groups=in_ch, bias=False), nn.BatchNorm2d(in_ch), act,
+        #     nn.Conv2d(in_ch, out_ch, 1, bias=False), nn.BatchNorm2d(out_ch),
+        # )
+        # self.conv = nn.Sequential( # fused
+        #     nn.Conv2d(in_ch, mult*in_ch, 3, 1, 3//2, groups=in_ch, bias=False), nn.BatchNorm2d(mult*in_ch),
+        #     # nn.Conv2d(in_ch, mult*in_ch, 1, bias=False), nn.BatchNorm2d(mult*in_ch), act,
+        #     nn.Conv2d(mult*in_ch, mult*in_ch, 3, 1, 3//2, groups=mult*in_ch, bias=False), nn.BatchNorm2d(mult*in_ch), act,
+        #     nn.Conv2d(mult*in_ch, out_ch, 1, bias=False), nn.BatchNorm2d(out_ch),
+        # )
+
