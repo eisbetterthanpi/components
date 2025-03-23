@@ -5,7 +5,9 @@ class SeparableConv2d(nn.Module):
         super().__init__()
         out_ch = out_ch or in_ch
         self.conv = nn.Conv2d(in_ch, in_ch, 3, 1, 3//2, groups=in_ch, bias=False)
+        # self.conv = MultiConv(in_ch, in_ch, (3,7), groups=in_ch, bias=False)
         self.pointwise = nn.Conv2d(in_ch, out_ch, 1, bias=False)
+        # self.pointwise = zero_module(nn.Conv2d(in_ch, out_ch, 1, bias=False))
 
     def forward(self,x):
         x = self.conv(x)
