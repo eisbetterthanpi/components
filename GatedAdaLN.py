@@ -52,7 +52,7 @@ class GatedAdaLN(nn.Module):
         # gate = torch.sigmoid(gate)
         # x = gate * ((1 + scale) * self.norm(x) + shift) + (1 - gate) * x
 
-        # x = x + gate * self.mlp((1 + scale) * self.norm(x) + shift)
+        # x = x + gate * self.mlp((1 + scale) * self.norm(x) + shift) # https://github.com/OliverRensu/FlowAR/blob/main/models/flowar.py#L157
         # x = gate * self.mlp((1 + scale) * self.norm(x) + shift)
 
         return x
