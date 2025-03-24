@@ -18,14 +18,13 @@ class MultiHeadAttention(nn.Module):
         # self.lin = zero_module(nn.Linear(d_model, d_model))
         # self.lin = nn.Sequential(nn.Dropout(dropout), zero_module(nn.Linear(d_model, d_model)))
         self.drop = nn.Dropout(dropout) # indp before q,k,v; after linout
-        self.scale = self.d_head ** -.5
+        self.scale = self.d_head**-.5
 
     def forward(self, x, cond=None, mask=None): # [batch, T, d_model]=[batch, h*w, c], [batch, num_tok, cond_dim], [batch,T]
-        batch = x.shape[0]
         if self.cond_dim==None: cond=x # is self attn
-        Q = self.q(x).view(batch, -1, self.n_heads, self.d_head).transpose(1, 2) # [batch, T, d_model] -> [batch, n_heads, T, d_head]
-        # K = self.k(x).view(batch, -1, self.n_heads, self.d_head).transpose(1, 2)
-        K, V = self.kv(cond).view(batch, -1, self.n_heads, 2*self.d_head).transpose(1, 2).chunk(2, dim=-1) # [batch, n_heads, T/num_tok, d_head]
+        Q = self.q(x).unflatten(-1, (self.n_heads, self.d_head)).transpose(1, 2) # [batch, T, d_model] -> [batch, n_heads, T, d_head]
+        # K = self.k(x).unflatten(-1, (self.n_heads, self.d_head)).transpose(1, 2)
+        K, V = self.kv(cond).unflatten(-1, (self.n_heads, 2*self.d_head)).transpose(1, 2).chunk(2, dim=-1) # [batch, n_heads, T/num_tok, d_head]
 
         # # linear attention # Softmax(Q) @ (Softmax(K).T @ V)
         if mask != None:
