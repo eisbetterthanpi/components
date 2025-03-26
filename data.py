@@ -2,8 +2,8 @@
 import torch
 import torchvision
 import torchvision.transforms as transforms
-transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
-# transform = transforms.Compose([transforms.ToTensor(),])
+# transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+transform = transforms.Compose([transforms.ToTensor(),])
 
 # train_data = torchvision.datasets.MNIST(root="data", train=True, download=True,transform=transforms.ToTensor(),)
 
@@ -26,4 +26,5 @@ def imshow(img):
 # dataiter = iter(train_loader) # get some random training images
 # images, labels = next(dataiter)
 # print(images.shape) # [batch, 3, 32, 32]
+# imshow(images)
 # imshow(torchvision.utils.make_grid(images))
