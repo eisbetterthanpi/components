@@ -2,6 +2,33 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+def zero_module(module):
+    for p in module.parameters():
+        p.detach().zero_()
+    return module
+
+class SelfAttn(nn.Module):
+    def __init__(self, dim, n_heads):
+        super().__init__()
+        self.dim, self.heads = dim, n_heads
+        d_head = dim//n_heads
+        self.qkv = nn.Linear(dim, dim*3, bias=False)
+        # self.lin = nn.Linear(dim, dim)
+        self.lin = zero_module(nn.Linear(dim, dim))
+        self.rope = RoPE(d_head, seq_len=512, base=10000)
+        # self.rope = RoPE2D(d_head, h=64, w=64, base=100)
+        self.scale = d_head**-.5
+
+    def forward(self, x): # [b,t,d]
+        q,k,v = self.qkv(x).unflatten(-1, (self.heads,-1)).chunk(3, dim=-1) # [b, r^2, h/r*w/r, dim] # [b*r^2, h/r*w/r, n_heads, d_head]?
+        q, k = self.rope(q), self.rope(k)
+        q, k = q.softmax(dim=-1)*self.scale, k.softmax(dim=-2)
+        context = k.transpose(-2,-1) @ v # [batch, n_heads, d_head, d_head]
+        x = q @ context # [batch, n_heads, T/num_tok, d_head]
+        return self.lin(x)
+
+
+
 class SelfAttn(nn.Module):
     def __init__(self, dim, n_heads, r=2):
         super().__init__()
