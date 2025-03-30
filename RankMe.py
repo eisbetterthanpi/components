@@ -12,7 +12,8 @@ def RankMe(Z):
     where Z is the matrix of embeddings (N × K)
     """
     # compute the singular values of the embeddings
-    # _u, s, _vh = torch.linalg.svd(embeddings, full_matrices=False)  # s.shape = (min(N, K),)
+    # _u, s, _vh = torch.linalg.svd(Z, full_matrices=False)  # s.shape = (min(N, K),)
+    # s = torch.linalg.svd(Z, full_matrices=False).S
     s = torch.linalg.svdvals(Z)
     p = s / torch.sum(s, axis=0) + 1e-7
     return torch.exp(-torch.sum(p * torch.log(p)))
