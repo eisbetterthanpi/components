@@ -19,5 +19,5 @@ def RankMe(Z):
     return torch.exp(-torch.sum(p * torch.log(p)))
 
 Z = torch.randn(5, 3)
-o = RankMe(Z)
-print(o)
+rankme = RankMe(Z)
+print(rankme)
