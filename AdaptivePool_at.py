@@ -1,4 +1,4 @@
-# @title hiera vit me
+# @title AdaptivePool_at
 import torch
 import torch.nn as nn
 
