@@ -30,7 +30,7 @@ class MultiHeadAttention(nn.Module):
         # if mask != None:
         #     mask = mask[:, None, :, None] # [batch,T] -> [batch,1,T,1]
         #     k, v = k.masked_fill(mask, -torch.finfo(x.dtype).max), v.masked_fill(mask, -torch.finfo(x.dtype).max)
-        # q, k = q.softmax(dim=-1)*self.scale, K.softmax(dim=-2)
+        # q, k = q.softmax(dim=-1)*self.scale, k.softmax(dim=-2)
         # context = k.transpose(-2,-1) @ v # [batch, n_heads, d_head, d_head]
         # out = q @ context # [batch, n_heads, T/num_tok, d_head]
 
