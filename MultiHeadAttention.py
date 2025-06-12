@@ -10,7 +10,7 @@ def zero_module(module):
     return module
 
 class MultiHeadAttention(nn.Module):
-    # def __init__(self, d_model, n_heads=None, d_head=8, cond_dim=None, dropout=0.): # .1
+    # def __init__(self, d_model, n_heads=None, d_head=8, cond_dim=None, drop=0.): # .1
     def __init__(self, query_dim, cond_dim=None, n_heads=8, d_head=64, drop=0):
         super().__init__()
         # self.d_model, self.n_heads, self.d_head = d_model, n_heads, d_model // n_heads
@@ -20,7 +20,7 @@ class MultiHeadAttention(nn.Module):
         self.q = nn.Linear(query_dim, d_model, bias=False)
         self.kv = nn.Linear(cond_dim or d_model, 2*d_model, bias=False)
         self.lin = zero_module(nn.Linear(d_model, d_model))
-        self.drop = nn.Dropout(dropout) # indp before q,k,v; after linout
+        self.drop = nn.Dropout(drop) # indp before q,k,v; after linout
         self.scale = self.d_head**-.5
         # torch.nn.init.normal_(self.q.weight, std=.02)
         # torch.nn.init.normal_(self.kv.weight, std=.02)
@@ -60,7 +60,7 @@ class SwiGLU(nn.Module): # https://arxiv.org/pdf/2002.05202
 
 
 class AttentionBlock(nn.Module):
-    # def __init__(self, d_model, cond_dim=None, d_head, ff_dim=None, dropout=0.):
+    # def __init__(self, d_model, cond_dim=None, d_head, ff_dim=None, drop=0.):
     def __init__(self, d_model, n_heads ,cond_dim=None, ff_dim=None, drop=0):
         super().__init__()
         self.d_model = d_model
@@ -68,7 +68,7 @@ class AttentionBlock(nn.Module):
         self.norm1 = nn.RMSNorm(d_model) # LayerNorm RMSNorm
         if cond_dim!=None: self.norm2 = nn.RMSNorm(cond_dim)
         self.drop = nn.Dropout(drop)
-        self.attn = MultiHeadAttention(d_model, cond_dim, n_heads=n_heads, d_head=d_model//n_heads, dropout=drop)
+        self.attn = MultiHeadAttention(d_model, cond_dim, n_heads=n_heads, d_head=d_model//n_heads, drop=drop)
         act = nn.ReLU()
         if ff_dim==None: ff_dim=d_model*4
         self.ff = nn.Sequential(
