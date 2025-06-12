@@ -68,8 +68,7 @@ class AttentionBlock(nn.Module):
         self.norm1 = nn.RMSNorm(d_model) # LayerNorm RMSNorm
         if cond_dim!=None: self.norm2 = nn.RMSNorm(cond_dim)
         self.drop = nn.Dropout(drop)
-        self.attn = MultiHeadAttention(d_model, n_heads, dropout=dropout)
-        self.attn = Attention(d_model, cond_dim, n_heads=n_heads, d_head=d_model//n_heads)
+        self.attn = MultiHeadAttention(d_model, cond_dim, n_heads=n_heads, d_head=d_model//n_heads, dropout=drop)
         act = nn.ReLU()
         if ff_dim==None: ff_dim=d_model*4
         self.ff = nn.Sequential(
@@ -78,9 +77,9 @@ class AttentionBlock(nn.Module):
             # nn.RMSNorm(d_model), act, nn.Linear(d_model, ff_dim),
             # nn.RMSNorm(ff_dim), act, zero_module(nn.Linear(ff_dim, d_model))
         )
-        # self.ff = SwiGLU(d_model, ff_dim)
         # torch.nn.init.normal_(self.ff[1].weight, std=.02)
         torch.nn.init.normal_(self.ff[1].weight, std=1/(math.sqrt(d_model)+math.sqrt(ff_dim)))
+        # self.ff = SwiGLU(d_model, ff_dim)
 
     def forward(self, x, cond=None, mask=None): # [b,c,h,w], [batch, num_tok, cond_dim], [batch,T]
         # print('attblk fwd', x.shape, cond.shape if cond!=None else None, mask.shape if mask!=None else None)
