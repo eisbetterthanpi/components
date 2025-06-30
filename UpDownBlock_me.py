@@ -37,6 +37,7 @@ class UpDownBlock(nn.Module):
     def __init__(self, in_ch, out_ch, kernel=7, r=1):
         super().__init__()
         self.block = PixelShuffleConv(in_ch, out_ch, kernel=kernel, r=r)
+        # self.block = zero_module(PixelShuffleConv(in_ch, out_ch, kernel=kernel, r=r))
 
     def forward(self, x): # [b,c,h,w]
         out = self.block(x)
