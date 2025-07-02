@@ -2,6 +2,11 @@
 import torch
 import torch.nn as nn
 
+def zero_module(module):
+    for p in module.parameters():
+        p.detach().zero_()
+    return module
+
 class ResBlock(nn.Module):
     def __init__(self, in_ch, out_ch=None, kernel=3):
         super().__init__()
