@@ -1,7 +1,11 @@
-
 import math
 import torch
 import torch.nn as nn
+
+# torch.nn.init.normal_(self.lin0.weight, std=.02)
+torch.nn.init.normal_(self.lin0.weight, std=1/(math.sqrt(d_model)+math.sqrt(ff_dim)))
+nn.init.trunc_normal_(self.tok_emb.weight, mean=0, std=emb_std, a=-3*emb_std, b=3*emb_std) # https://github.com/facebookresearch/blt/blob/main/bytelatent/model/local_models.py#L136
+
 
 def StableInit(m): # https://openreview.net/pdf?id=lkRjnNW0gb
     if isinstance(m, nn.Linear):
